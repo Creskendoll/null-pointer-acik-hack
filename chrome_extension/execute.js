@@ -9,10 +9,10 @@ function animateTextBox(textBox) {
     clearTimeout(animationTimer);
   }
   var originalBackground = textBox.style.backgroundColor;
-  var animationSteps = 5;
+  var animationSteps = 10;
   function animate() {
-    var value = Math.floor(128 + 128 * (5 - animationSteps) / 5.0);
-    var color = "rgb(" + value + ",255," + value + ")";
+    var value = Math.floor(128 + 128 * (10-animationSteps)/5.0);
+    var color = "rgb(0,"+value+","+value+")";
     textBox.style.backgroundColor = color;
     if ((animationSteps--) > 0) {
       animationTimer = setTimeout(animate, 75);
@@ -72,19 +72,17 @@ function isContentEditableElement(element) {
   return (element && element.tagName == "BODY" && element.isContentEditable);
 }
 
-function setConvertedText(element, response) {
-  console.log("asdads");
-
+function setConvertedText(element, response) { 
   if (isSimpleTextBox(element)) {
-    element.value = response.text;
+    // element.value = response.text;
     // Restore text selection
-    if (response.selectionStart) {
-      element.selectionStart = response.selectionStart;
-      element.selectionEnd = response.selectionEnd;
-    }
+    // if (response.selectionStart) {
+    //   element.selectionStart = response.selectionStart;
+    //   element.selectionEnd = response.selectionEnd;
+    // }
     animateTextBox(element);
   } else if (isContentEditableElement(element)) {
-    element.innerHTML = response.text;
+    // element.innerHTML = response.text;
     animateTextBox(element);
   }
 }
@@ -97,8 +95,8 @@ function deasciifyActiveElement() {
     chrome.runtime.sendMessage({
       message: "TEXT_TO_DEASCIIFY",
       input: input
-    }, function (response) {
-      setConvertedText(activeElement, response);
+    }, function(response) {
+      // setConvertedText(activeElement, response);
     });
   } else {
     // Nothing to deasciify. Let background know page so that it can show the
@@ -123,14 +121,14 @@ function onChangeTextBox(ev) {
         text: activeTextBox.value,
         selectionStart: activeTextBox.selectionStart,
         selectionEnd: activeTextBox.selectionEnd,
-      }, function (response) {
-        activeTextBox.value = response.text;
-        // Restore the cursor.
-        if (response.selectionStart && response.selectionEnd &&
-          response.selectionStart == response.selectionEnd) {
-          activeTextBox.selectionStart = response.selectionStart;
-          activeTextBox.selectionEnd = response.selectionEnd;
-        }
+      }, function(response) {
+          // activeTextBox.value = response.text;
+          // Restore the cursor.
+          // if (response.selectionStart && response.selectionEnd &&
+          //     response.selectionStart == response.selectionEnd) {
+          //   activeTextBox.selectionStart = response.selectionStart;
+          //   activeTextBox.selectionEnd = response.selectionEnd;
+          // }
       });
     }
   }
@@ -160,7 +158,7 @@ function getActiveTextBox() { // TODO: REMOVE
 
 function toggleAutoDeasciify() {
   var activeTextBox = getActiveTextBox();
-
+  
   if (!activeTextBox.onkeyup) {
     setEnableAutoConversion(activeTextBox, true);
   } else {
