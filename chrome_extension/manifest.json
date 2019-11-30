@@ -1,12 +1,12 @@
 {
   "manifest_version": 2,
-  "name": "Test Extension",
+  "name": "Null Pointer",
   "version": "0.1",
   "background": {
     "page": "./background.html"
   },
   "browser_action": {
-    "default_title": "Test Extension",
+    "default_title": "Null Pointer",
     "default_icon": {
       "16": "images/null_pointer.png",
       "32": "images/null_pointer.png",

@@ -77,6 +77,8 @@ function isContentEditableElement(element) {
 }
 
 function setConvertedText(element, response) {
+  console.log("asdads");
+  
   if (isSimpleTextBox(element)) {
     element.value = response.text;
     // Restore text selection
@@ -162,6 +164,7 @@ function getActiveTextBox() { // TODO: REMOVE
 
 function toggleAutoDeasciify() {
   var activeTextBox = getActiveTextBox();
+  
   if (!activeTextBox.onkeyup) {
     setEnableAutoConversion(activeTextBox, true);
   } else {
