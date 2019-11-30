@@ -10,12 +10,12 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "http://10.212.80.204:5000/predict"
-      ],
-      "js": [
-        "content.js"
-      ]
+      "background": {
+        "scripts": [
+          "content.js"
+        ],
+        "persistent": false
+      },
     }
   ],
   "browser_action": {
