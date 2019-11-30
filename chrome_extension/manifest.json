@@ -12,7 +12,7 @@
       "32": "images/null_pointer.png",
       "48": "images/null_pointer.png",
       "128": "images/null_pointer.png"
-    },
+    }
   },
   "permissions": [
     "contextMenus",
@@ -24,16 +24,6 @@
     "http://*/* ",
     "activeTab"
   ],
-  "content_scripts": [
-    {
-      "matches": [
-        "https://www.google.com/*"
-      ],
-      "js": [
-        "./inject.js"
-      ]
-    }
-  ],
   "commands": {
     "toggle_suggestion": {
       "suggested_key": {
@@ -41,5 +31,5 @@
       },
       "description": "Toggle deasciify"
     }
-  },
+  }
 }
