@@ -1,23 +1,10 @@
 {
   "manifest_version": 2,
   "name": "Test Extension",
-  "version": "0.0",
+  "version": "0.1",
   "background": {
-    "persistent": false,
-    "scripts": [
-      "background.js"
-    ]
+    "page": "./background.html"
   },
-  "content_scripts": [
-    {
-      "background": {
-        "scripts": [
-          "content.js"
-        ],
-        "persistent": false
-      },
-    }
-  ],
   "browser_action": {
     "default_title": "Test Extension",
     "default_icon": {
@@ -25,9 +12,34 @@
       "32": "images/null_pointer.png",
       "48": "images/null_pointer.png",
       "128": "images/null_pointer.png"
-    }
+    },
   },
   "permissions": [
+    "contextMenus",
+    "contentSettings",
+    "cookies",
+    "idle",
+    "tabs",
+    "https://*/* ",
+    "http://*/* ",
     "activeTab"
-  ]
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.google.com/*"
+      ],
+      "js": [
+        "./inject.js"
+      ]
+    }
+  ],
+  "commands": {
+    "toggle_suggestion": {
+      "suggested_key": {
+        "default": "Alt+T"
+      },
+      "description": "Toggle deasciify"
+    }
+  },
 }
