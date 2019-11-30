@@ -1,9 +1,5 @@
-// Author: Mustafa Emre Acer
-//
-// Chrome deasciifier content script: Communicates with the background page so
-// that we don't need to include deasciifier.js in every page.
+import axios from 'axios';
 
-// Animate a text box:
 var animationTimer = null;
 function animateTextBox(textBox) {
   if (!textBox) {
@@ -162,7 +158,6 @@ function getActiveTextBox() { // TODO: REMOVE
 
 function toggleAutoDeasciify() {
   var activeTextBox = getActiveTextBox();
-  console.log(activeTextBox.value);
   
   if (!activeTextBox.onkeyup) {
     setEnableAutoConversion(activeTextBox, true);
@@ -183,4 +178,46 @@ function addElement() {
   unorderedList.appendChild(listItem);
   unorderedList.appendChild(listItem);
   unorderedList.appendChild(listItem);
+}
+
+function getSuggestion() {
+  var xhttp = new XMLHttpRequest();
+  const body = getActiveTextBox().value;
+  const url = 'http://10.212.80.204:5000/suggest'
+  xhttp.open("POST", url, true);
+
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      getActiveTextBox().value = http.responseText;
+
+    }
+  };
+  xhttp.send(body);
+}
+
+function getParaphrase() {
+  var xhttp = new XMLHttpRequest();
+  const body = getActiveTextBox().value;
+  const url = 'http://10.212.80.204:5000/paraphrase'
+  xhttp.open("POST", url, true);
+
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      getActiveTextBox().value = http.responseText;
+    }
+  };
+  xhttp.send(body);
+}
+
+function getSummary() {
+  var xhttp = new XMLHttpRequest();
+  const url = 'http://10.212.80.204:5000/summary'
+  xhttp.open("POST", url, true);
+
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      getActiveTextBox().value = http.responseText;
+    }
+  };
+  xhttp.send(body);
 }
