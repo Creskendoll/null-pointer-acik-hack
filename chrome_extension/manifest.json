@@ -8,10 +8,10 @@
   "browser_action": {
     "default_title": "Null Pointer",
     "default_icon": {
-      "16": "images/null_pointer.png",
-      "32": "images/null_pointer.png",
-      "48": "images/null_pointer.png",
-      "128": "images/null_pointer.png"
+      "16": "images/Logo.png",
+      "32": "images/Logo.png",
+      "48": "images/Logo.png",
+      "128": "images/Logo.png"
     }
   },
   "permissions": [
@@ -25,11 +25,23 @@
     "activeTab"
   ],
   "commands": {
-    "toggle_suggestion": {
+    "get_suggestion": {
       "suggested_key": {
-        "default": "Alt+T"
+        "default": "Ctrl+Space"
       },
-      "description": "Toggle deasciify"
+      "description": "Toggle Null Pointer"
+    },
+    "get_paraphrase": {
+      "suggested_key": {
+        "default": "Alt+P"
+      },
+      "description": "Get Paraphrase"
+    }, 
+    "get_summary": {
+      "suggested_key": {
+        "default": "Alt+S"
+      },
+      "description": "Get Summary"
     }
   }
 }

@@ -163,11 +163,25 @@ chrome.contextMenus.create({
 });
 
 chrome.commands.onCommand.addListener(function(command){
-  chrome.tabs.getCurrent(function(tab){
-    chrome.tabs.executeScript(null, {file: "execute.js"}, function() {
-      chrome.tabs.executeScript(null, {code: "toggleAutoDeasciify();"});
+  if(command === "get_suggestion") {
+    chrome.tabs.getCurrent(function(tab){
+      chrome.tabs.executeScript(null, {file: "execute.js"}, function() {
+        chrome.tabs.executeScript(null, {code: "getSuggestion();"});
+      });
     });
-  });
+  } else if (command === "get_paraphrase") {
+    chrome.tabs.getCurrent(function(tab){
+      chrome.tabs.executeScript(null, {file: "execute.js"}, function() {
+        chrome.tabs.executeScript(null, {code: "getParaphrase();"});
+      });
+    });
+  } else if (command === "get_summary") {
+    chrome.tabs.getCurrent(function(tab){
+      chrome.tabs.executeScript(null, {file: "execute.js"}, function() {
+        chrome.tabs.executeScript(null, {code: "getSummary();"});
+      });
+    });
+  }
 });
 
 Deasciifier.onPatternListLoaded = function(patternListV2) {

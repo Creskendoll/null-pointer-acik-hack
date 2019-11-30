@@ -8,48 +8,45 @@ html {
   font-family: Helvetica, Sans Serif;
   font-size: 1em;
 }
-#page { margin: 1em; min-width: 40em}
+#page { margin: 1em; min-width: 20em}
 #msg { white-space: nowrap; overflow: visible; display: block; min-height: 1em;}
 #info { text-align: right; width: 100%; font-size: 0.8em; color: #777;
         white-space: nowrap; float: right; clear:both}
 a { color: #777; text-decoration: underline}
 a:hover { color: #99f; text-decoration: none}
-#inputtext {width: 100%; min-height: 15em;}
+#inputtext {width: 100%; min-height: 10em;}
 hr { width:100%; height: 1px; margin: 2px 0px 2px 0px; display: inline-block}
 .btn {cursor:pointer; min-width: 5em; }
-.sep {width:100%; height:1px; background: #aaa; margin-top:4px; margin-bottom:4px}
+.sep {width:100%; height:1px; background: #aaa; margin-bottom:4px}
+.list-item {margin: 1em;}
 </style>
-<body style="background: #eee;">
+<body style="background-color: #777;">
 <div id="page">
   <div style="clear:both">
     <div id="msg">
-      T&#252;rk&#231;e karakterleri &#231;evirmek i&#231;in sayfadan bir metin kutusu se&#231;in.
+      <ul style="color: azure; font-weight: bold; font-size: large;">
+        <li class="list-item">
+          Tamamlama : CTRL+Boşluk
+        </li>
+        <li class="list-item">
+          Alıntı : Alt+P
+        </li>
+        <li class="list-item">
+          Özet : Alt+S
+        </li>
+      </ul>
     </div>
   </div>
-  <div id="customtext" style="clear:both">
-    <div class="sep"></div>
-    <textarea id="inputtext" placeholder="&#199;evirmek istedi&#287;iniz metni buraya girebilirsiniz."></textarea>
-    <span style="white-space:nowrap">
-      <b>&#199;evir:</b>
-      <input class="btn" type="button" id="btn_deascii" value="T&#252;rk&#231;e" title="Metne T&#252;rk&#231;e karakterleri ekler" />
-      <input class="btn" type="button" id="btn_ascii" value="ASCII" title="Metni ASCII karakterlere &#231;evirir"/>
-      <input class="btn" type="button" id="btn_html" value="HTML" title="Metni HTML kodlar&#305;na &#231;evirir"/>
-      <input class="btn" type="button" id="btn_js" value="JS" title="Metni JavaScript kodlar&#305;na &#231;evirir"/>
-      <span style="vertical-align:middle; margin-left:5px;">
-        <input type="checkbox" id="checkCopy"><label style="color:#777; cursor:pointer"
-          for="checkCopy" title="&#199;evrilen metni otomatik olarak panoya kopyalar">&#199;eviriyi kopyala</label>
-      </span>
-    </span>
+  <div id="customtext" style="clear:both;">
+      <div class="sep"></div>
+    <img src="./images/Logo+Ad.png" style="height: 10em; width: 100%;">
   </div>
-  <div id="info">
+  <!-- <div id="info">
     <div class="sep"></div>
     <span style="float:left; clear:both">
-      Metin kutular&#305;na yazarken otomatik &#231;evrimi <b>ALT+T</b> ile a&#231;&#305;p kapatabilirsiniz.
+      Metin kutular&#305;na yazarken otomatik &#231;evrimi <b>CTRL+Boşluk</b> ile a&#231;&#305;p kapatabilirsiniz.
     </span>
-    <br>
-    <a href="https://chrome.google.com/extensions/detail/nhfdmlgglfmcdheoabgklabmgjklgofk" target="_blank" title="Eklentinin web sayfas&#305;na git">Chrome Eklentisi</a> |
-    <a href="https://deasciifier.com/?src=chrome_deasciifier" target="_blank" title="Turkish Deasciifier'&#305; online kullan">deasciifier.com</a>
-  </div>
+  </div> -->
 </div>
 <script src="lib/deasciifier.min.js"></script>
 <script src="popup.js"></script>
