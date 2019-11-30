@@ -15,10 +15,10 @@ function animateTextBox(textBox) {
   var originalBackground = textBox.style.backgroundColor;
   var animationSteps = 5;
   function animate() {
-    var value = Math.floor(128 + 128 * (5-animationSteps)/5.0);
+    var value = Math.floor(128 + 128 * (5 - animationSteps) / 5.0);
     var color = "rgb(" + value + ",255," + value + ")";
     textBox.style.backgroundColor = color;
-    if ((animationSteps--)>0) {
+    if ((animationSteps--) > 0) {
       animationTimer = setTimeout(animate, 75);
     } else {
       textBox.style.backgroundColor = originalBackground;
@@ -34,14 +34,14 @@ function getActiveInput() {
     if (activeElement.tagName == "IFRAME") {
       activeElement = activeElement.contentDocument.activeElement;
       if (activeElement &&
-          activeElement.tagName == "BODY" &&
-          activeElement.isContentEditable) {
+        activeElement.tagName == "BODY" &&
+        activeElement.isContentEditable) {
         return activeElement;
       }
       return null;
     }
     if (activeElement.tagName == "INPUT" ||
-        activeElement.tagName == "TEXTAREA") {
+      activeElement.tagName == "TEXTAREA") {
       return activeElement;
     }
   }
@@ -51,16 +51,16 @@ function getActiveInput() {
 function getTextToConvert(element) {
   if (isSimpleTextBox(element)) {
     return {
-      isPlainText:    true,
-      text:           element.value,
+      isPlainText: true,
+      text: element.value,
       selectionStart: element.selectionStart,
-      selectionEnd:   element.selectionEnd
+      selectionEnd: element.selectionEnd
     }
   }
   if (isContentEditableElement(element)) {
     return {
       isHTML: true,
-      text:   element.innerHTML
+      text: element.innerHTML
     }
   }
   return null;
@@ -68,8 +68,8 @@ function getTextToConvert(element) {
 
 function isSimpleTextBox(element) {
   return (element &&
-      element.tagName == "INPUT" ||
-      element.tagName == "TEXTAREA");
+    element.tagName == "INPUT" ||
+    element.tagName == "TEXTAREA");
 }
 
 function isContentEditableElement(element) {
@@ -101,7 +101,7 @@ function deasciifyActiveElement() {
     chrome.runtime.sendMessage({
       message: "TEXT_TO_DEASCIIFY",
       input: input
-    }, function(response) {
+    }, function (response) {
       setConvertedText(activeElement, response);
     });
   } else {
@@ -124,17 +124,17 @@ function onChangeTextBox(ev) {
     if (activeTextBox) {
       chrome.runtime.sendMessage({
         message: "DEASCIIFY_TYPED_TEXT",
-        text:activeTextBox.value,
+        text: activeTextBox.value,
         selectionStart: activeTextBox.selectionStart,
         selectionEnd: activeTextBox.selectionEnd,
-      }, function(response) {
-          activeTextBox.value = response.text;
-          // Restore the cursor.
-          if (response.selectionStart && response.selectionEnd &&
-              response.selectionStart == response.selectionEnd) {
-            activeTextBox.selectionStart = response.selectionStart;
-            activeTextBox.selectionEnd = response.selectionEnd;
-          }
+      }, function (response) {
+        activeTextBox.value = response.text;
+        // Restore the cursor.
+        if (response.selectionStart && response.selectionEnd &&
+          response.selectionStart == response.selectionEnd) {
+          activeTextBox.selectionStart = response.selectionStart;
+          activeTextBox.selectionEnd = response.selectionEnd;
+        }
       });
     }
   }
@@ -145,10 +145,10 @@ function setEnableAutoConversion(textBox, enabled) {
   // keyup handlers.
   if (enabled) {
     textBox.onkeyup = onChangeTextBox;
-    chrome.runtime.sendMessage({message: "DEASCIIFY_HANDLER_ON"});
+    chrome.runtime.sendMessage({ message: "DEASCIIFY_HANDLER_ON" });
   } else {
     textBox.onkeyup = null;
-    chrome.runtime.sendMessage({message: "DEASCIIFY_HANDLER_OFF"});
+    chrome.runtime.sendMessage({ message: "DEASCIIFY_HANDLER_OFF" });
   }
 }
 
@@ -156,7 +156,7 @@ function setEnableAutoConversion(textBox, enabled) {
 function getActiveTextBox() { // TODO: REMOVE
   var activeElement = document.activeElement;
   if (activeElement && activeElement.tagName == "INPUT" ||
-      activeElement.tagName == "TEXTAREA") {
+    activeElement.tagName == "TEXTAREA") {
     return activeElement;
   }
   return null;
@@ -173,3 +173,17 @@ function toggleAutoDeasciify() {
   animateTextBox(activeTextBox);
 }
 //@ sourceURL=execute.js
+
+function addElement() {
+  const generatedDiv = document.createElement("div");
+  const unorderedList = document.createElement("ul");
+  const listItem = document.createElement("li");
+
+  generatedDiv.appendChild(unorderedList);
+
+  unorderedList.appendChild(listItem);
+  unorderedList.appendChild(listItem);
+  unorderedList.appendChild(listItem);
+
+
+}
