@@ -8,11 +8,10 @@ from keras_preprocessing.text import Tokenizer
 import io
 # tf.enable_eager_execution()
 
-BATCH_SIZE = 1000
-BUFFER_SIZE = 1000
-EPOCHS = 15
+BATCH_SIZE = 256
+EPOCHS = 20
 
-file_path = "/home/ken/Documents/acik-hack/null-pointer-acik-hack/res/out.txt"
+file_path = "/home/ken/Documents/acik-hack/null-pointer-acik-hack/backend/res/out.txt"
 
 text = io.open(file_path, "r", encoding="ISO8859-9").read()
 # text = io.open(file_path, "r").read()
@@ -39,7 +38,7 @@ X, Y = sequences[:, 0], sequences[:, 1]
 X = np.expand_dims(X, 1)
 Y = np.expand_dims(Y, 1)
 
-dataset = tf.data.Dataset.from_tensor_slices((X, Y)).shuffle(BUFFER_SIZE)
+dataset = tf.data.Dataset.from_tensor_slices((X, Y)).shuffle(len(X)*2)
 dataset = dataset.batch(BATCH_SIZE, drop_remainder=True)
 
 class Model(tf.keras.Model):
@@ -77,7 +76,7 @@ model = Model(vocab_size, embedding_dim, units, BATCH_SIZE)
 
 optimizer = tf.optimizers.Adam()
 
-checkpoint_dir = "./models/training_checkpoints_15_strip"
+checkpoint_dir = "./models/new_out"
 checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
 checkpoint = tf.train.Checkpoint(optimizer=optimizer, model=model)
 
@@ -109,7 +108,7 @@ def loss_function(labels, logits):
 
 checkpoint.restore(tf.train.latest_checkpoint(checkpoint_dir)).expect_partial()
 
-start_string = "aç"
+start_string = "yaralının baktığı kişi"
 
 hidden = [tf.zeros((1, units))]
 
