@@ -45,6 +45,10 @@ checkpoint.restore(tf.train.latest_checkpoint(checkpoint_dir)).expect_partial()
 def get():
     return "Ne baktın yarram."
 
+@app.route("/")
+def homepage():
+    return app.send_static_file("homepage.html")
+
 @app.route("/predict", methods=["POST"])
 @cross_origin(headers=['Content-Type'])
 def predict():
