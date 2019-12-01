@@ -9,15 +9,16 @@ import os
 from MyModel import MyModel
 from keras_preprocessing.text import Tokenizer
 import io
+import requests
 # log = logging.getLogger('werkzeug')
 # log.setLevel(logging.ERROR)
 
 app = Flask(__name__, static_url_path='', static_folder='public')
 
-file_path = "/home/ken/Documents/acik-hack/null-pointer-acik-hack/res/train.txt"
+file_path = "/home/ken/Documents/acik-hack/null-pointer-acik-hack/backend/res/out.txt"
 
 # text = io.open(file_path, "r", encoding="ISO8859-9").read()
-text = io.open(file_path, "r").read()
+text = io.open(file_path, "r", encoding="ISO8859-9").read()
 
 tokenizer = Tokenizer()
 tokenizer.fit_on_texts([text])
@@ -27,35 +28,44 @@ encoded = tokenizer.texts_to_sequences([text])[0]
 word2idx = tokenizer.word_index
 idx2word = tokenizer.index_word
 
-BATCH_SIZE = 1000
+BATCH_SIZE = 256
 embedding_dim = 100
 units = 512
-vocab_size = 9915
+vocab_size = len(tokenizer.word_index) + 1
 
 model = MyModel(vocab_size, embedding_dim, units, BATCH_SIZE)
 optimizer = tf.optimizers.Adam()
-checkpoint_dir = "./models/training_checkpoints_sait_12"
+checkpoint_dir = "./models/new_out"
 checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
 checkpoint = tf.train.Checkpoint(optimizer=optimizer, model=model)
 
 checkpoint.restore(tf.train.latest_checkpoint(checkpoint_dir)).expect_partial()
 
-@app.route("/predict", methods=["GET"])
+@app.route("/summary", methods=["POST"])
 @cross_origin(headers=['Content-Type'])
-def get():
+def paraphrase():
+    res = requests.post("https://turkcemetinozetleme.teaddict.net/ozetle/api/new", data={
+        "contextOfText" : request.json
+    })
+    response = app.response_class(
+        response=json.dumps({"summary" : res.json()}),
+        status=200,
+        mimetype='application/json'
+    )
+    return response, 200
+
+@app.route("/", methods=["GET"])
+def homepage():
+    # return app.send_static_file("homepage.html")
     return "Ne baktın yarram."
 
-@app.route("/")
-def homepage():
-    return app.send_static_file("homepage.html")
-
-@app.route("/predict", methods=["POST"])
+@app.route("/suggest", methods=["POST"])
 @cross_origin(headers=['Content-Type'])
 def predict():
 
-    start_string = request.json
-
+    start_string = request.data.decode()
     n_words = 10
+    hidden = [tf.zeros((1, units))]
 
     for i in range(n_words):
         start_words = start_string.split()
@@ -68,6 +78,7 @@ def predict():
 
         start_string += " " + idx2word[predicted_id]
 
+    print(start_string)
     response = app.response_class(
         response=json.dumps({"prediction" : start_string}),
         status=200,
@@ -77,4 +88,5 @@ def predict():
 
 port = int(environ.get("PORT", 5000))
 app.run(host="0.0.0.0", debug=True, port=port)
+# app.run(host="0.0.0.0", debug=True, port=port, ssl_context=("certac.pem", "keyac.pem"))
 # app.run(host="0.0.0.0", port=port)

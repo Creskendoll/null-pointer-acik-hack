@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 var animationTimer = null;
 function animateTextBox(textBox) {
   if (!textBox) {
@@ -89,22 +87,26 @@ function setConvertedText(element, response) {
 
 function deasciifyActiveElement() {
   var activeElement = getActiveInput();
-  if (activeElement) {
-    var input = getTextToConvert(activeElement);
-    // Ask the background to deasciify the text.
-    chrome.runtime.sendMessage({
-      message: "TEXT_TO_DEASCIIFY",
-      input: input
-    }, function(response) {
-      // setConvertedText(activeElement, response);
-    });
-  } else {
-    // Nothing to deasciify. Let background know page so that it can show the
-    // popup.
-    chrome.runtime.sendMessage({
-      message: "NOTHING_TO_DEASCIIFY"
-    });
-  }
+  chrome.runtime.sendMessage({
+    message: "NOTHING_TO_DEASCIIFY"
+  });
+  
+  // if (activeElement) {
+  //   var input = getTextToConvert(activeElement);
+  //   // Ask the background to deasciify the text.
+  //   chrome.runtime.sendMessage({
+  //     message: "TEXT_TO_DEASCIIFY",
+  //     input: input
+  //   }, function(response) {
+  //     // setConvertedText(activeElement, response);
+  //   });
+  // } else {
+  //   // Nothing to deasciify. Let background know page so that it can show the
+  //   // popup.
+  //   chrome.runtime.sendMessage({
+  //     message: "NOTHING_TO_DEASCIIFY"
+  //   });
+  // }
 }
 
 
@@ -184,12 +186,14 @@ function getSuggestion() {
   var xhttp = new XMLHttpRequest();
   const body = getActiveTextBox().value;
   const url = 'http://10.212.80.204:5000/suggest'
+  // const url = 'https://acik-hack.appspot.com:8081/suggest'
   xhttp.open("POST", url, true);
 
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      getActiveTextBox().value = http.responseText;
-
+      console.log(xhttp.responseText);
+      
+      getActiveTextBox().value = xhttp.responseText;
     }
   };
   xhttp.send(body);
@@ -216,7 +220,7 @@ function getSummary() {
 
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      getActiveTextBox().value = http.responseText;
+      getActiveTextBox().value = xhttp.responseText;
     }
   };
   xhttp.send(body);
