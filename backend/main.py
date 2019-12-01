@@ -88,7 +88,8 @@ def homepage():
 @cross_origin(headers=['Content-Type'])
 def predict():
     try:
-        start_string = request.data.decode()
+        out_string = ""
+        start_string = request.data.decode().lower()
         n_words = 5
         hidden = [tf.zeros((1, units))]
 
@@ -102,10 +103,11 @@ def predict():
             predicted_id = tf.argmax(predictions[-1]).numpy()
 
             start_string += " " + idx2word[predicted_id]
+            out_string += " " + idx2word[predicted_id]
 
-        print(start_string)
+        print(out_string)
         response = app.response_class(
-            response=json.dumps({"prediction" : start_string}, ensure_ascii=False),
+            response=json.dumps({"prediction" : out_string}, ensure_ascii=False),
             status=200,
             mimetype='application/json'
         )

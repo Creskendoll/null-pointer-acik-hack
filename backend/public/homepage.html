@@ -6,6 +6,7 @@
   <link rel="shortcut icon" href="./img/Logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Null Pointer</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="shortcut icon" src>
   <style>
     #textbox {
@@ -37,6 +38,39 @@
       border-radius: 10px;
       box-shadow: 0px 0px 10px #555;
     }
+
+    .arrow {
+    border-right:2px solid black;
+    border-bottom:2px solid black;
+    width:10px;
+    height:10px;
+    transform: rotate(-45deg);
+    margin-top:40px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      padding-bottom: 10px;
+      padding-left: 2em;
+    }
+    li:before{
+      content: "\f00c"; /* FontAwesome Unicode */
+      font-family: FontAwesome;
+      display: inline-block;
+      margin-left: -1.3em; /* same as padding-left set on li */
+      width: 1.3em; /* same as padding-left set on li */
+    }
+    .pred-item {
+      border: 1px solid black;
+      margin: 5px;
+      border-radius: 40px;
+      padding: 5px;
+    }
+    .pred-item:hover {
+      background-color: #007f7f;
+    }
   </style>
 </head>
 
@@ -55,9 +89,9 @@
 
   <div id="pop-up" style="display: none;">
     <ul>
-      <li onclick="appendFirstSuggestion()" style="cursor:pointer;" id="li1"></li>
-      <li onclick="appendSecondSuggestion()" style="cursor:pointer;" id="li2"></li>
-      <li onclick="appendThirdSuggestion()" style="cursor:pointer;" id="li3"></li>
+      <li class="pred-item" onclick="appendFirstSuggestion()" style="cursor:pointer;" id="li1"></li>
+      <li class="pred-item" onclick="appendSecondSuggestion()" style="cursor:pointer;" id="li2"></li>
+      <li class="pred-item" onclick="appendThirdSuggestion()" style="cursor:pointer;" id="li3"></li>
     </ul>
   </div>
 
