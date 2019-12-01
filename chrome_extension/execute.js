@@ -151,7 +151,7 @@ function setEnableAutoConversion(textBox, enabled) {
 
 function getActiveTextBox() { // TODO: REMOVE
   var activeElement = document.activeElement;
-  
+
   if (activeElement && activeElement.tagName == "INPUT" ||
     activeElement.tagName == "TEXTAREA") {
     return activeElement;
@@ -187,14 +187,14 @@ function getSuggestion() {
   var xhttp = new XMLHttpRequest();
   const body = getActiveTextBox().value;
   console.log(body);
-  
+
   const url = 'http://192.168.1.114:5000/suggest'
   // const url = 'https://acik-hack.appspot.com/suggest'
   xhttp.open("POST", url, true);
 
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      
+
       const div = document.getElementById("pop-up");
       div.style = "display: flex;justify-content: center;"
 
@@ -206,6 +206,12 @@ function getSuggestion() {
 
       const listItem3 = document.getElementById("li3");
       listItem3.innerText = JSON.parse(xhttp.response).prediction.split(' ')[3];
+    }
+    else {
+      const errorRenderer = document.getElementById("error-renderer");
+      errorRenderer.style = "display: flex;justify-content: center;"
+      errorRenderer.innerText = "Üzgünüz bu sözcük bulunamadı."
+
     }
   };
   xhttp.setRequestHeader('Content-Type', 'utf-8');

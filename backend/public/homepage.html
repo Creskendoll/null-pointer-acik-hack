@@ -40,41 +40,49 @@
     }
 
     .arrow {
-    border-right:2px solid black;
-    border-bottom:2px solid black;
-    width:10px;
-    height:10px;
-    transform: rotate(-45deg);
-    margin-top:40px;
+      border-right: 2px solid black;
+      border-bottom: 2px solid black;
+      width: 10px;
+      height: 10px;
+      transform: rotate(-45deg);
+      margin-top: 40px;
     }
+
     ul {
       list-style: none;
       padding: 0;
     }
+
     li {
       padding-bottom: 10px;
       padding-left: 2em;
     }
-    li:before{
-      content: "\f00c"; /* FontAwesome Unicode */
+
+    li:before {
+      content: "\f00c";
+      /* FontAwesome Unicode */
       font-family: FontAwesome;
       display: inline-block;
-      margin-left: -1.3em; /* same as padding-left set on li */
-      width: 1.3em; /* same as padding-left set on li */
+      margin-left: -1.3em;
+      /* same as padding-left set on li */
+      width: 1.3em;
+      /* same as padding-left set on li */
     }
+
     .pred-item {
       border: 1px solid black;
       margin: 5px;
       border-radius: 40px;
       padding: 5px;
     }
+
     .pred-item:hover {
       background-color: #007f7f;
     }
   </style>
 </head>
 
-<body style="background-color: #b5651d;">
+<body style="background-color: rgba(226, 114, 15,0.8);">
   <div style="text-align: center">
     <img src="./img/Logo+Ad.png" width="505px;">
   </div>
@@ -94,6 +102,8 @@
       <li class="pred-item" onclick="appendThirdSuggestion()" style="cursor:pointer;" id="li3"></li>
     </ul>
   </div>
+
+  <div id="error-renderer" style="display: none;"></div>
 
 </body>
 
