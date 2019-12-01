@@ -185,8 +185,8 @@ function addElement() {
 function getSuggestion() {
   var xhttp = new XMLHttpRequest();
   const body = getActiveTextBox().value;
-  const url = 'http://10.212.80.204:5000/suggest'
-  // const url = 'https://acik-hack.appspot.com:8081/suggest'
+  const url = 'http://localhost:5000/suggest'
+  // const url = 'https://acik-hack.appspot.com/suggest'
   xhttp.open("POST", url, true);
 
   xhttp.onreadystatechange = function () {

@@ -10,12 +10,16 @@ from MyModel import MyModel
 from keras_preprocessing.text import Tokenizer
 import io
 import requests
+from OpenSSL import SSL
+context = SSL.Context(SSL.TLSv1_2_METHOD)
+context.use_privatekey_file('./keyac.pem')
+context.use_certificate_file('./certac.pem')
 # log = logging.getLogger('werkzeug')
 # log.setLevel(logging.ERROR)
 
 app = Flask(__name__, static_url_path='', static_folder='public')
 
-file_path = "/home/ken/Documents/acik-hack/null-pointer-acik-hack/backend/res/out.txt"
+file_path = "./res/out.txt"
 
 # text = io.open(file_path, "r", encoding="ISO8859-9").read()
 text = io.open(file_path, "r", encoding="ISO8859-9").read()
@@ -56,37 +60,41 @@ def paraphrase():
 
 @app.route("/", methods=["GET"])
 def homepage():
-    # return app.send_static_file("homepage.html")
-    return "Ne baktın yarram."
+    return app.send_static_file("homepage.html")
+    # return "Ne baktın yarram."
 
 @app.route("/suggest", methods=["POST"])
 @cross_origin(headers=['Content-Type'])
 def predict():
+    try:
+        start_string = request.data.decode()
+        n_words = 10
+        hidden = [tf.zeros((1, units))]
 
-    start_string = request.data.decode()
-    n_words = 10
-    hidden = [tf.zeros((1, units))]
+        for i in range(n_words):
+            start_words = start_string.split()
+            input_eval = [word2idx[i] for i in start_words]
+            input_eval = tf.expand_dims(input_eval, 0)
 
-    for i in range(n_words):
-        start_words = start_string.split()
-        input_eval = [word2idx[i] for i in start_words]
-        input_eval = tf.expand_dims(input_eval, 0)
+            predictions, hidden = model(input_eval, hidden)
 
-        predictions, hidden = model(input_eval, hidden)
+            predicted_id = tf.argmax(predictions[-1]).numpy()
 
-        predicted_id = tf.argmax(predictions[-1]).numpy()
+            start_string += " " + idx2word[predicted_id]
 
-        start_string += " " + idx2word[predicted_id]
-
-    print(start_string)
-    response = app.response_class(
-        response=json.dumps({"prediction" : start_string}),
-        status=200,
-        mimetype='application/json'
-    )
-    return response, 200
+        print(start_string)
+        response = app.response_class(
+            response=json.dumps({"prediction" : start_string}),
+            status=200,
+            mimetype='application/json'
+        )
+        return response, 200
+    except Exception as e:
+        print(e)
+        print(e.with_traceback())
 
 port = int(environ.get("PORT", 5000))
-app.run(host="0.0.0.0", debug=True, port=port)
+# app.run(host="0.0.0.0", debug=True, port=port)
 # app.run(host="0.0.0.0", debug=True, port=port, ssl_context=("certac.pem", "keyac.pem"))
+app.run(host="0.0.0.0", debug=True, port=port)
 # app.run(host="0.0.0.0", port=port)
