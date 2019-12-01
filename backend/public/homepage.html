@@ -5,50 +5,61 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <style> 
+  <style>
     #textbox {
       height: 200px;
       width: 500px;
     }
 
-  #button1 {
-    border:1px #333 solid;   
-    padding:10px;
-    background-color:grey;
-    -webkit-border-radius:40px;
-    -moz-border-radius:40px;
-    border-radius:40px;
-    cursor: pointer;
-  }
+    .button1 {
+      margin: 2em;
+      border: 1px #333 solid;
+      padding: 10px;
+      background-color: grey;
+      -webkit-border-radius: 40px;
+      -moz-border-radius: 40px;
+      border-radius: 40px;
+      cursor: pointer;
+    }
 
-  input[type=submit] {
-    -webkit-transition:all 0.3s ease-in-out;    
-    -moz-transition:all 0.3s ease-in-out;
-    -o-transition:all 0.3s ease-in-out;
-    -ms-transition:all 0.3s ease-in-out;
-    transition:all 0.3s ease-in-out;        
-  }
+    input[type=submit] {
+      -webkit-transition: all 0.3s ease-in-out;
+      -moz-transition: all 0.3s ease-in-out;
+      -o-transition: all 0.3s ease-in-out;
+      -ms-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
+    }
 
-  #button1:hover {
-    background-color:#007f7f;
-    border-radius:10px;
-    box-shadow:0px 0px 10px #555;
-  }
+    .button1:hover {
+      background-color: #007f7f;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px #555;
+    }
   </style>
 </head>
 
-<body>
+<body style="background-color: cadetblue;">
   <div style="text-align: center">
-    <img src="../../chrome_extension/images/Logo+Ad.png" width="505px;"> 
+    <img src="./img/Logo+Ad.png" width="505px;">
   </div>
-  </br>
   <div style="text-align: center">
-    <input type="button" id="button1" value="Kelime Öner"> 
-    <input type="button" id="button1" value="Özet Çıkar"> 
-    <input type="button" id="button1" value="Alıntı Yap">  
+    <input type="button" class="button1" value="Kelime Öner">
+    <input type="button" class="button1" value="Özet Çıkar">
+    <input type="button" class="button1" value="Alıntı Yap">
   </div>
   <div style="text-align: center">
     <textarea id="textbox"></textarea>
   </div>
+
+  <div id="pop-up" style="display: none;">
+    Kenan
+    <ul>
+      <li id="li1"></li>
+      <li id="li2"></li>
+      <li id="li3"></li>
+    </ul>
+  </div>
+
 </body>
+
 </html>
