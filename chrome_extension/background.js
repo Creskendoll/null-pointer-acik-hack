@@ -39,65 +39,65 @@ function deasciifyInput(input) {
   return result;
 }
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   var msg = request;
   switch (msg.message) {
     case "TEXT_TO_DEASCIIFY":
-    {
-      var result = deasciifyInput(msg.input);
-      if (result) {
-        var toggledCharCnt =
+      {
+        var result = deasciifyInput(msg.input);
+        if (result) {
+          var toggledCharCnt =
             result.changedPositions ? result.changedPositions.length : 0;
-        // Send back the result.
-        sendResponse({
-          message: "DEASCIIFIED_TEXT",
-          text: result.text,
-          selectionStart: msg.input.selectionStart,
-          selectionEnd: msg.input.selectionEnd
-        });
-        if (sender && sender.tab) {
-          setBrowserActionUI(sender.tab.id, toggledCharCnt);
+          // Send back the result.
+          sendResponse({
+            message: "DEASCIIFIED_TEXT",
+            text: result.text,
+            selectionStart: msg.input.selectionStart,
+            selectionEnd: msg.input.selectionEnd
+          });
+          if (sender && sender.tab) {
+            setBrowserActionUI(sender.tab.id, toggledCharCnt);
+          }
         }
       }
-    }
-    break;
+      break;
 
     case "NOTHING_TO_DEASCIIFY":
-      chrome.browserAction.setPopup({popup: "popup.html"});
+      chrome.browserAction.setPopup({ popup: "popup.html" });
       break;
 
     case "DEASCIIFY_HANDLER_ON":
       showNotification(MSG_AUTO_CONVERT_ON,
-                       MSG_TEXT_WILL_BE_AUTO_CONVERTED, 3500);
-    break;
+        MSG_TEXT_WILL_BE_AUTO_CONVERTED, 3500);
+      break;
 
     case "DEASCIIFY_HANDLER_OFF":
       showNotification(MSG_AUTO_CONVERT_OFF,
-                       MSG_TEXT_WONT_BE_AUTO_CONVERTED, 3500);
-    break;
+        MSG_TEXT_WONT_BE_AUTO_CONVERTED, 3500);
+      break;
 
     case "DEASCIIFY_TYPED_TEXT":
-    {
-      var text = msg.text;
-      if (text) {
-        var converted = null;
-        if (msg.selectionStart == msg.selectionEnd && msg.selectionStart > 0) {
-          // Cursor is in the middle of the text
-          converted = deasciify_word_at_cursor(text, msg.selectionStart);
-        } else {
-          converted = deasciifier.turkish_correct_last_word(text);
-        }
-        if (converted) {
-          // Send back deasciified text to content script.
-          sendResponse({
-            "text": converted.text,
-            "selectionStart": msg.selectionStart,
-            "selectionEnd": msg.selectionEnd
-          });
+      {
+        var text = msg.text;
+        if (text) {
+          var converted = null;
+          if (msg.selectionStart == msg.selectionEnd && msg.selectionStart > 0) {
+            // Cursor is in the middle of the text
+            converted = deasciify_word_at_cursor(text, msg.selectionStart);
+          } else {
+            converted = deasciifier.turkish_correct_last_word(text);
+          }
+          if (converted) {
+            // Send back deasciified text to content script.
+            sendResponse({
+              "text": converted.text,
+              "selectionStart": msg.selectionStart,
+              "selectionEnd": msg.selectionEnd
+            });
+          }
         }
       }
-    }
-    break;
+      break;
   }
 });
 
@@ -117,8 +117,8 @@ function convertSelectedEditableInTab(tab) {
   if (!tab) {
     return;
   }
-  chrome.tabs.executeScript(tab.id, {file: "execute.js"}, function() {
-    chrome.tabs.executeScript(tab.id, {code: "deasciifyActiveElement();"});
+  chrome.tabs.executeScript(tab.id, { file: "execute.js" }, function () {
+    chrome.tabs.executeScript(tab.id, { code: "deasciifyActiveElement();" });
   });
 };
 
@@ -134,7 +134,7 @@ function showNotification(title, text, timeout) {
     text
   );
   notification.show();
-  setTimeout(function(){ notification.cancel(); }, timeout);
+  setTimeout(function () { notification.cancel(); }, timeout);
 }
 
 function deasciify_word_at_cursor(text, cursorPos) {
@@ -146,12 +146,12 @@ function deasciify_word_at_cursor(text, cursorPos) {
 }
 
 // Called when the user clicks on the browser action.
-chrome.browserAction.onClicked.addListener(function(tab) {
+chrome.browserAction.onClicked.addListener(function (tab) {
   ConvertTurkishChars();
 });
 
 function getContextMenuClickHandler() {
-  return function(info, tab) {
+  return function (info, tab) {
     convertSelectedEditableInTab(tab);
   }
 }
@@ -162,28 +162,46 @@ chrome.contextMenus.create({
   "onclick": getContextMenuClickHandler()
 });
 
-chrome.commands.onCommand.addListener(function(command){
-  if(command === "get_suggestion") {
-    chrome.tabs.getCurrent(function(tab){
-      chrome.tabs.executeScript(null, {file: "execute.js"}, function() {
-        chrome.tabs.executeScript(null, {code: "getSuggestion();"});
+chrome.commands.onCommand.addListener(function (command) {
+  if (command === "get_suggestion") {
+    chrome.tabs.getCurrent(function (tab) {
+      chrome.tabs.executeScript(null, { file: "execute.js" }, function () {
+        chrome.tabs.executeScript(null, { code: "getSuggestion();" });
+      });
+    });
+  } else if (command === "append_first_suggestion") {
+    chrome.tabs.getCurrent(function (tab) {
+      chrome.tabs.executeScript(null, { file: "execute.js" }, function () {
+        chrome.tabs.executeScript(null, { code: "appendFirstSuggestion();" });
+      });
+    });
+  } else if (command === "append_second_suggestion") {
+    chrome.tabs.getCurrent(function (tab) {
+      chrome.tabs.executeScript(null, { file: "execute.js" }, function () {
+        chrome.tabs.executeScript(null, { code: "appendSecondSuggestion();" });
+      });
+    });
+  } else if (command === "append_third_suggestion") {
+    chrome.tabs.getCurrent(function (tab) {
+      chrome.tabs.executeScript(null, { file: "execute.js" }, function () {
+        chrome.tabs.executeScript(null, { code: "appendThirdSuggestion();" });
       });
     });
   } else if (command === "get_paraphrase") {
-    chrome.tabs.getCurrent(function(tab){
-      chrome.tabs.executeScript(null, {file: "execute.js"}, function() {
-        chrome.tabs.executeScript(null, {code: "getParaphrase();"});
+    chrome.tabs.getCurrent(function (tab) {
+      chrome.tabs.executeScript(null, { file: "execute.js" }, function () {
+        chrome.tabs.executeScript(null, { code: "getParaphrase();" });
       });
     });
   } else if (command === "get_summary") {
-    chrome.tabs.getCurrent(function(tab){
-      chrome.tabs.executeScript(null, {file: "execute.js"}, function() {
-        chrome.tabs.executeScript(null, {code: "getSummary();"});
+    chrome.tabs.getCurrent(function (tab) {
+      chrome.tabs.executeScript(null, { file: "execute.js" }, function () {
+        chrome.tabs.executeScript(null, { code: "getSummary();" });
       });
     });
   }
 });
 
-Deasciifier.onPatternListLoaded = function(patternListV2) {
+Deasciifier.onPatternListLoaded = function (patternListV2) {
   Deasciifier.init(patternListV2);
 }

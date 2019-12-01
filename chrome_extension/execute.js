@@ -235,5 +235,5 @@ function getSummary() {
       getActiveTextBox().value = xhttp.responseText;
     }
   };
-  xhttp.send(JSON.stringify({"contextOfText": getActiveTextBox().value}));
+  xhttp.send(JSON.stringify({ "contextOfText": getActiveTextBox().value }));
 }
