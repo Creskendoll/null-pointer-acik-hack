@@ -228,15 +228,12 @@ function getParaphrase() {
 
 function getSummary() {
   var xhttp = new XMLHttpRequest();
-  // const url = 'http://localhost:5000/summary';
   const url = "https://turkcemetinozetleme.teaddict.net/ozetle/api/new";
   xhttp.open("POST", url, true);
 
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      console.log(xhttp.responseText);
-
-      getActiveTextBox().value = xhttp.responseText;
+      getActiveTextBox().value = JSON.parse(xhttp.responseText).result;
     }
   };
   xhttp.send(JSON.stringify({ "contextOfText": getActiveTextBox().value }));

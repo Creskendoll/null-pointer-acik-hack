@@ -7,6 +7,7 @@ import logging
 import tensorflow as tf
 import os
 from MyModel import MyModel
+from MyHTMLParser import MyHTMLParser
 from keras_preprocessing.text import Tokenizer
 import io
 import requests
@@ -71,7 +72,9 @@ def paraphrase():
     }, headers={
         "content-type": "application/x-www-form-urlencoded; charset=UTF-8;"
     })
+    parser = MyHTMLParser()
     print(res.text)
+    parser.feed(res.text)
     response = app.response_class(
         response=json.dumps({"paraphrase" : res.json()}),
         status=200,

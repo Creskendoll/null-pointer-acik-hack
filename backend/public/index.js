@@ -13,14 +13,24 @@ function getSummary() {
 }
 
 function getParaphrase() {
-  console.log("asduighk");
+  var xhttp = new XMLHttpRequest();
+  const body = document.getElementById("textbox").value;
+  
+  const url = 'http://192.168.1.114:5000/paraphrase'
+  xhttp.open("POST", url, true);
 
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log(xhttp.responseText);
+      document.getElementById("textbox").value = JSON.parse(xhttp.response).paraphrase;
+    }
+  };
+  xhttp.send(body);
 }
 
 function getSuggestion() {
     var xhttp = new XMLHttpRequest();
   const body = document.getElementById("textbox").value;
-  console.log(body);
   
   const url = 'http://192.168.1.114:5000/suggest'
   // const url = 'https://acik-hack.appspot.com/suggest'
