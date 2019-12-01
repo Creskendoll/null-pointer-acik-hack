@@ -192,17 +192,16 @@ function getSuggestion() {
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       const div = document.getElementById("pop-up");
-      console.log(div);
       div.style = "display: flex;justify-content: center;"
 
       const listItem = document.getElementById("li1");
-      listItem.innerText = JSON.parse(xhttp.response).prediction.split(' ')[0];
+      listItem.innerText = JSON.parse(xhttp.response).prediction.split(' ')[1];
 
       const listItem2 = document.getElementById("li2");
-      listItem2.innerText = JSON.parse(xhttp.response).prediction.split(' ')[1];
+      listItem2.innerText = JSON.parse(xhttp.response).prediction.split(' ')[2];
 
       const listItem3 = document.getElementById("li3");
-      listItem3.innerText = JSON.parse(xhttp.response).prediction.split(' ')[2];
+      listItem3.innerText = JSON.parse(xhttp.response).prediction.split(' ')[3];
     }
   };
   xhttp.setRequestHeader('Content-Type', 'utf-8');
@@ -225,13 +224,16 @@ function getParaphrase() {
 
 function getSummary() {
   var xhttp = new XMLHttpRequest();
-  const url = 'http://10.212.80.204:5000/summary'
+  // const url = 'http://localhost:5000/summary';
+  const url = "https://turkcemetinozetleme.teaddict.net/ozetle/api/new";
   xhttp.open("POST", url, true);
 
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
+      console.log(xhttp.responseText);
+
       getActiveTextBox().value = xhttp.responseText;
     }
   };
-  xhttp.send(body);
+  xhttp.send(JSON.stringify({"contextOfText": getActiveTextBox().value}));
 }

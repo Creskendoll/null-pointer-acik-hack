@@ -47,12 +47,33 @@ checkpoint.restore(tf.train.latest_checkpoint(checkpoint_dir)).expect_partial()
 
 @app.route("/summary", methods=["POST"])
 @cross_origin(headers=['Content-Type'])
-def paraphrase():
+def summary():
     res = requests.post("https://turkcemetinozetleme.teaddict.net/ozetle/api/new", data={
-        "contextOfText" : request.json
+        "contextOfText":request.data.decode()
+    }, headers={
+        "content-type": "application/x-www-form-urlencoded; charset=UTF-8;"
     })
+    print(res.text)
     response = app.response_class(
         response=json.dumps({"summary" : res.json()}),
+        status=200,
+        mimetype='application/json'
+    )
+    return response, 200
+
+@app.route("/paraphrase", methods=["POST"])
+@cross_origin(headers=['Content-Type'])
+def paraphrase():
+    base_url = "https://tr.m.wikiquote.org/w/index.php?search="
+    query = request.data.decode()
+    res = requests.post(base_url+query, data={
+        "contextOfText":request.data.decode()
+    }, headers={
+        "content-type": "application/x-www-form-urlencoded; charset=UTF-8;"
+    })
+    print(res.text)
+    response = app.response_class(
+        response=json.dumps({"paraphrase" : res.json()}),
         status=200,
         mimetype='application/json'
     )
@@ -68,7 +89,7 @@ def homepage():
 def predict():
     try:
         start_string = request.data.decode()
-        n_words = 10
+        n_words = 5
         hidden = [tf.zeros((1, units))]
 
         for i in range(n_words):
@@ -84,7 +105,7 @@ def predict():
 
         print(start_string)
         response = app.response_class(
-            response=json.dumps({"prediction" : start_string}),
+            response=json.dumps({"prediction" : start_string}, ensure_ascii=False),
             status=200,
             mimetype='application/json'
         )

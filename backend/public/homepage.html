@@ -3,8 +3,10 @@
 
 <head>
   <meta charset="UTF-8">
+  <link rel="shortcut icon" href="./img/Logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Null Pointer</title>
+  <link rel="shortcut icon" src>
   <style>
     #textbox {
       height: 200px;
@@ -43,16 +45,15 @@
     <img src="./img/Logo+Ad.png" width="505px;">
   </div>
   <div style="text-align: center">
-    <input type="button" class="button1" value="Kelime Öner">
-    <input type="button" class="button1" value="Özet Çıkar">
-    <input type="button" class="button1" value="Alıntı Yap">
+    <input onclick="getSuggestion()" type="button" class="button1" value="Kelime Öner">
+    <input onclick="getSummary()" type="button" class="button1" value="Özet Çıkar">
+    <input onclick="getParaphrase()" type="button" class="button1" value="Alıntı Yap">
   </div>
   <div style="text-align: center">
     <textarea id="textbox"></textarea>
   </div>
 
   <div id="pop-up" style="display: none;">
-    Kenan
     <ul>
       <li id="li1"></li>
       <li id="li2"></li>
@@ -62,4 +63,5 @@
 
 </body>
 
+  <script src="./index.js"></script>
 </html>
