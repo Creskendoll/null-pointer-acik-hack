@@ -9,8 +9,8 @@ function animateTextBox(textBox) {
   var originalBackground = textBox.style.backgroundColor;
   var animationSteps = 10;
   function animate() {
-    var value = Math.floor(128 + 128 * (10-animationSteps)/5.0);
-    var color = "rgb(0,"+value+","+value+")";
+    var value = Math.floor(128 + 128 * (10 - animationSteps) / 5.0);
+    var color = "rgb(0," + value + "," + value + ")";
     textBox.style.backgroundColor = color;
     if ((animationSteps--) > 0) {
       animationTimer = setTimeout(animate, 75);
@@ -70,7 +70,7 @@ function isContentEditableElement(element) {
   return (element && element.tagName == "BODY" && element.isContentEditable);
 }
 
-function setConvertedText(element, response) { 
+function setConvertedText(element, response) {
   if (isSimpleTextBox(element)) {
     // element.value = response.text;
     // Restore text selection
@@ -90,7 +90,7 @@ function deasciifyActiveElement() {
   chrome.runtime.sendMessage({
     message: "NOTHING_TO_DEASCIIFY"
   });
-  
+
   // if (activeElement) {
   //   var input = getTextToConvert(activeElement);
   //   // Ask the background to deasciify the text.
@@ -123,14 +123,14 @@ function onChangeTextBox(ev) {
         text: activeTextBox.value,
         selectionStart: activeTextBox.selectionStart,
         selectionEnd: activeTextBox.selectionEnd,
-      }, function(response) {
-          // activeTextBox.value = response.text;
-          // Restore the cursor.
-          // if (response.selectionStart && response.selectionEnd &&
-          //     response.selectionStart == response.selectionEnd) {
-          //   activeTextBox.selectionStart = response.selectionStart;
-          //   activeTextBox.selectionEnd = response.selectionEnd;
-          // }
+      }, function (response) {
+        // activeTextBox.value = response.text;
+        // Restore the cursor.
+        // if (response.selectionStart && response.selectionEnd &&
+        //     response.selectionStart == response.selectionEnd) {
+        //   activeTextBox.selectionStart = response.selectionStart;
+        //   activeTextBox.selectionEnd = response.selectionEnd;
+        // }
       });
     }
   }
@@ -160,7 +160,7 @@ function getActiveTextBox() { // TODO: REMOVE
 
 function toggleAutoDeasciify() {
   var activeTextBox = getActiveTextBox();
-  
+
   if (!activeTextBox.onkeyup) {
     setEnableAutoConversion(activeTextBox, true);
   } else {
@@ -185,17 +185,27 @@ function addElement() {
 function getSuggestion() {
   var xhttp = new XMLHttpRequest();
   const body = getActiveTextBox().value;
-  const url = 'http://localhost:5000/suggest'
+  const url = 'http://192.168.1.114:5000/suggest'
   // const url = 'https://acik-hack.appspot.com/suggest'
   xhttp.open("POST", url, true);
 
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      console.log(xhttp.responseText);
-      
-      getActiveTextBox().value = xhttp.responseText;
+      const div = document.getElementById("pop-up");
+      console.log(div);
+      div.style = "display: flex;justify-content: center;"
+
+      const listItem = document.getElementById("li1");
+      listItem.innerText = JSON.parse(xhttp.response).prediction.split(' ')[0];
+
+      const listItem2 = document.getElementById("li2");
+      listItem2.innerText = JSON.parse(xhttp.response).prediction.split(' ')[1];
+
+      const listItem3 = document.getElementById("li3");
+      listItem3.innerText = JSON.parse(xhttp.response).prediction.split(' ')[2];
     }
   };
+  xhttp.setRequestHeader('Content-Type', 'utf-8');
   xhttp.send(body);
 }
 
