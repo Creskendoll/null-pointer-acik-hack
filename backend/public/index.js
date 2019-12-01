@@ -21,8 +21,9 @@ function getParaphrase() {
 
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
+      const curVal = document.getElementById("textbox").value; 
       console.log(xhttp.responseText);
-      document.getElementById("textbox").value = JSON.parse(xhttp.response).paraphrase;
+      document.getElementById("textbox").value = "`" + curVal + "` - " + JSON.parse(xhttp.response).paraphrase;
     }
   };
   xhttp.send(body);

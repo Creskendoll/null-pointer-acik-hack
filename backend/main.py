@@ -66,17 +66,17 @@ def summary():
 @cross_origin(headers=['Content-Type'])
 def paraphrase():
     base_url = "https://tr.m.wikiquote.org/w/index.php?search="
-    query = request.data.decode()
-    res = requests.post(base_url+query, data={
+    query = request.data.decode().replace(" ", "+")
+    res = requests.post(base_url+query+"&ns0=1", data={
         "contextOfText":request.data.decode()
     }, headers={
         "content-type": "application/x-www-form-urlencoded; charset=UTF-8;"
     })
     parser = MyHTMLParser()
-    print(res.text)
+    # print(res.text)
     parser.feed(res.text)
     response = app.response_class(
-        response=json.dumps({"paraphrase" : res.json()}),
+        response=json.dumps({"paraphrase" : parser.found}, ensure_ascii=False),
         status=200,
         mimetype='application/json'
     )
